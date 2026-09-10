@@ -16,6 +16,13 @@ type UserController struct {
 	beego.Controller
 }
 
+// creating struct for patch request
+type UpdateUserRequest struct {
+	Name  *string `json:"name"`
+	Age   *int    `json:"age"`
+	Email *string `json:"email"`
+}
+
 // controller methods
 
 // index route
@@ -87,5 +94,105 @@ func (c *UserController) CreateUser() {
 
 	// return the inserted data as response
 	c.Data["json"] = user
+	c.ServeJSON()
+}
+
+// update route
+func (c *UserController) UpdateUser() {
+	// extract id from path param
+	idStr := c.Ctx.Input.Param(":id")
+	// convert it into int
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		c.Data["json"] = map[string]string{
+			"error": "error occured",
+		}
+		c.ServeJSON()
+		return
+	}
+
+	// create user variable
+	user := models.User{Id: id}
+
+	//Read data from database
+	o := orm.NewOrm()
+
+	err = o.Read(&user)
+	if err != nil {
+		c.Data["json"] = map[string]string{
+			"error": err.Error(),
+		}
+		c.ServeJSON()
+		return
+	}
+
+	// update data
+	var body UpdateUserRequest
+	err = json.Unmarshal(c.Ctx.Input.RequestBody, &body)
+	if err != nil {
+		c.Data["json"] = map[string]string{
+			"error": "invalid json",
+		}
+		c.ServeJSON()
+		return
+	}
+
+	// update fields
+	if body.Name != nil {
+		user.Name = *body.Name
+	}
+	if body.Email != nil {
+		user.Email = *body.Email
+	}
+	if body.Age != nil {
+		user.Age = *body.Age
+	}
+
+	// update query
+	_, err = o.Update(&user)
+	if err != nil {
+		c.Data["json"] = map[string]string{
+			"error": err.Error(),
+		}
+		c.ServeJSON()
+		return
+	}
+
+	//send updated user in the response
+	c.Data["json"] = user
+	c.ServeJSON()
+}
+
+// delete route
+func (c *UserController)DeleteUser(){
+	// extracting id
+	strid := c.Ctx.Input.Param(":id")
+	// convert it to int
+	id, err := strconv.Atoi(strid)
+	if err != nil{
+		c.Data["json"] = map[string]string{
+			"error": "Invalid Id",
+		}
+		c.ServeJSON()
+		return
+	}
+
+	// creating user variable
+	user := models.User{Id: id}
+
+	// delete query
+	o := orm.NewOrm()
+	_, err = o.Delete(&user)
+	if err != nil {
+		c.Data["json"] = map[string]string{
+			"error": err.Error(),
+		}
+		c.ServeJSON()
+		return
+	}	
+
+	c.Data["json"] = map[string]string{
+		"mssg": "user deleted successfully",
+	}
 	c.ServeJSON()
 }

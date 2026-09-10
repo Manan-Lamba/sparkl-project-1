@@ -9,5 +9,5 @@ import (
 func init() {
 	beego.Router("/", &controllers.MainController{})
 	beego.Router("/users", &controllers.UserController{}, "get:GetUsers;post:CreateUser")
-	beego.Router("/users/:id", &controllers.UserController{}, "get:ShowUser")
+	beego.Router("/users/:id", &controllers.UserController{}, "get:ShowUser;patch:UpdateUser;delete:DeleteUser")
 }
