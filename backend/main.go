@@ -6,6 +6,7 @@ import (
 
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/server/web"
+	"github.com/beego/beego/v2/server/web/filter/cors"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -30,5 +31,10 @@ func init() {
 }
 
 func main() {
+	web.InsertFilter("*", web.BeforeRouter, cors.Allow(&cors.Options{
+		AllowOrigins: []string{"http://localhost:5173"},
+		AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders: []string{"Origin", "Content-Type", "Authorization"},
+	}))
 	web.Run()
 }
