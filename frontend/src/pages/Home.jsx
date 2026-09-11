@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
 
 function Home() {
     const [users, setUsers] = useState([]);
@@ -14,6 +16,17 @@ function Home() {
 
         getUsers();
     }, []);
+
+    async function handleDelete(id){
+        const response = await fetch(`http://localhost:8080/users/${id}`,
+    {        
+        method: "DELETE",
+    }
+        )
+        if (response.ok) {
+        setUsers(users.filter((user) => user.Id !== id));
+    }
+    }
 
     return (
         <>
@@ -41,9 +54,9 @@ function Home() {
                                         <td>{user.Email}</td>
                                         <td>{user.Age}</td>
                                         <td>
-                                            <a href="/" style={{ textDecoration: "none", color: "black"}}><i class="fa-solid fa-eye"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <a href="/" style={{ textDecoration: "none", color: "black"}}><i class="fa-solid fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <a href="/" style={{ textDecoration: "none", color: "black"}}><i class="fa-solid fa-trash"></i></a>
+                                            <Link to={`/user/${user.Id}`} style={{color:"black"}}><i class="fa-solid fa-eye"></i></Link>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <Link to={`/user/${user.Id}/edit`} style={{color:"black"}}><i class="fa-solid fa-pencil"></i></Link>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <button onClick={() => handleDelete(user.Id)} style={{border:"none"}}><i class="fa-solid fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 ))}

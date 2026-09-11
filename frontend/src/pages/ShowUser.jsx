@@ -1,5 +1,26 @@
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function ShowUser() {
+    const { id } = useParams();
+    const userId = Number(id);
+
+
+    const[user, setUser] = useState([]);
+
+    useEffect(() => {
+        async function getUsers() {
+            const response = await fetch(`http://localhost:8080/users/${userId}`);
+            const data = await response.json();
+
+            console.log(data);
+            setUser(data);
+        }
+
+        getUsers();
+    }, [userId]);
+
     return (
         <div className="container mt-5">
             <div className="row justify-content-center">
@@ -13,21 +34,21 @@ function ShowUser() {
                             </h3>
 
                             <p className="card-text">
-                                <strong>Name:</strong> Manan Lamba
+                                <strong>Name:</strong> {user.Name}
                             </p>
 
                             <p className="card-text">
-                                <strong>Email:</strong> manan@example.com
+                                <strong>Email:</strong> {user.Email}
                             </p>
 
                             <p className="card-text">
-                                <strong>Age:</strong> 21
+                                <strong>Age:</strong> {user.Age}
                             </p>
 
-                            <button className="btn btn-primary">
+                            
+                            <Link to={`/user/${user.Id}/edit`}><button className="btn btn-primary">
                                 Edit
-                            </button>
-
+                            </button></Link>
                         </div>
                     </div>
 

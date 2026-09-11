@@ -1,7 +1,42 @@
-
-
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function NewForm() {
+    const[name, setName] = useState("");
+    const[email, setEmail] = useState("");
+    const[age, setAge] = useState("");
+
+    const navigate = useNavigate();
+
+    async function handleSubmit(e){
+        e.preventDefault();
+
+        const user = {
+            name: name,
+            email: email,
+            age: age
+        }
+
+        const response = await fetch("http://localhost:8080/users",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(user)
+            }
+        );
+        const data = await response.json();
+        console.log(data);
+
+        if (response.ok) {
+            navigate("/");
+        }
+
+    }
+
     return (
         <div className="container mt-5">
             <div className="row justify-content-center">
@@ -11,7 +46,7 @@ function NewForm() {
                         Add User
                     </h3>
 
-                    <form>
+                    <form onSubmit={handleSubmit}>
 
                         <div className="mb-3">
                             <label htmlFor="name" className="form-label">
@@ -22,6 +57,8 @@ function NewForm() {
                                 className="form-control"
                                 id="name"
                                 placeholder="Enter your name" required
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
                             />
                         </div>
 
@@ -34,6 +71,8 @@ function NewForm() {
                                 className="form-control"
                                 id="email"
                                 placeholder="Enter your email" required
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
 
@@ -46,6 +85,8 @@ function NewForm() {
                                 className="form-control"
                                 id="age"
                                 placeholder="Enter your age" required
+                                value={age}
+                                onChange={(e) => setAge(e.target.value)}
                             />
                         </div>
 

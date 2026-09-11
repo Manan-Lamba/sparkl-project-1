@@ -3,7 +3,6 @@ module backend
 go 1.27
 
 require (
-	github.com/beego/beego v1.12.14
 	github.com/beego/beego/v2 v2.3.10
 	github.com/go-sql-driver/mysql v1.9.2
 	github.com/smartystreets/goconvey v1.6.4
@@ -17,6 +16,7 @@ require (
 	github.com/hashicorp/golang-lru v1.0.2 // indirect
 	github.com/jtolds/gls v4.20.0+incompatible // indirect
 	github.com/kr/text v0.2.0 // indirect
+	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/prometheus/client_golang v1.22.0 // indirect
@@ -31,6 +31,5 @@ require (
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/text v0.25.0 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
