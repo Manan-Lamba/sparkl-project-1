@@ -4,10 +4,10 @@ package controllers
 import (
 	"backend/models"
 	"encoding/json"
-	"fmt"
 	"strconv"
 
 	"github.com/beego/beego/v2/client/orm"
+	"github.com/beego/beego/v2/core/validation"
 	beego "github.com/beego/beego/v2/server/web"
 )
 
@@ -79,7 +79,18 @@ func (c *UserController) CreateUser() {
 	// convert body to go struct
 	json.Unmarshal(body, &user)
 
-	fmt.Printf("%+v\n", user)
+	valid := validation.Validation{}
+
+	valid.Required(user.Name, "Name")
+	valid.Required(user.Email, "Email")
+	valid.Required(user.Age, "Age")
+
+	if valid.HasErrors() {
+		c.Data["json"] = valid.Errors
+		c.ServeJSON()
+		return
+	}
+
 	// insert user in the database
 	o := orm.NewOrm()
 	_, err := o.Insert(&user)
@@ -137,13 +148,36 @@ func (c *UserController) UpdateUser() {
 		return
 	}
 
-	// update fields
+	valid := validation.Validation{}
+
+	//check fields
+	if body.Name != nil {
+		valid.Required(*body.Name, "Name")
+	}
+
+	if body.Email != nil {
+		valid.Required(*body.Email, "Email")
+	}
+
+	if body.Age != nil {
+		valid.Required(*body.Age, "Age")
+	}
+
+	if valid.HasErrors() {
+		c.Data["json"] = valid.Errors
+		c.ServeJSON()
+		return
+	}
+
+	// ACTUALLY CHANGE THE USER
 	if body.Name != nil {
 		user.Name = *body.Name
 	}
+
 	if body.Email != nil {
 		user.Email = *body.Email
 	}
+
 	if body.Age != nil {
 		user.Age = *body.Age
 	}
@@ -164,12 +198,12 @@ func (c *UserController) UpdateUser() {
 }
 
 // delete route
-func (c *UserController)DeleteUser(){
+func (c *UserController) DeleteUser() {
 	// extracting id
 	strid := c.Ctx.Input.Param(":id")
 	// convert it to int
 	id, err := strconv.Atoi(strid)
-	if err != nil{
+	if err != nil {
 		c.Data["json"] = map[string]string{
 			"error": "Invalid Id",
 		}
@@ -189,7 +223,7 @@ func (c *UserController)DeleteUser(){
 		}
 		c.ServeJSON()
 		return
-	}	
+	}
 
 	c.Data["json"] = map[string]string{
 		"mssg": "user deleted successfully",

@@ -14,8 +14,10 @@ function NewForm() {
         const user = {
             name: name,
             email: email,
-            age: age
+            age: Number(age)
         }
+
+        console.log("Sending user:", user);
 
         const response = await fetch("http://localhost:8080/users",
             {
