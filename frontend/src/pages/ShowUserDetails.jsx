@@ -60,7 +60,7 @@ export default function ShowUserDetails() {
                                 <strong>State:</strong> {user.State_name}
                             </p>
                             <p className="card-text">
-                                <strong>Country:</strong> {user.Country_Name}
+                                <strong>Country:</strong> {user.Country_name}
                             </p>
 
 
