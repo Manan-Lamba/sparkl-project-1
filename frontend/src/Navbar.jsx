@@ -8,7 +8,7 @@ function Navbar() {
             <nav className="navbar sticky-top bg-body-tertiary">
                 <div className="container-fluid">
 
-                    <Link to="/" className="navbar-brand">
+                    <Link to="/users/details" className="navbar-brand">
                         <img
                             src={sparkl}
                             alt="Logo"

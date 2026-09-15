@@ -24,6 +24,7 @@ type GetUserDetailById struct{
 	City_name string
 	State_name string
 	Country_name string
+	City_id int
 }
 
 // dto for CreateUserDetail -> incoming request

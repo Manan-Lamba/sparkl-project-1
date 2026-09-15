@@ -12,4 +12,5 @@ func init() {
 	beego.Router("/users/:id", &controllers.UserController{}, "get:ShowUser;patch:UpdateUser;delete:DeleteUser")
 	beego.Router("/users/details", &controllers.User_detailsController{}, "get:GetUserDetails")
 	beego.Router("/users/:id/details", &controllers.User_detailsController{}, "get:GetUserDetailsById;post:CreateUserDetail;patch:UpdateUserDetail;delete:DeleteUserDetails")
+	beego.Router("/city", &controllers.CityController{}, "get:GetCity")
 }

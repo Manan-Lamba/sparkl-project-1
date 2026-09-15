@@ -74,7 +74,7 @@ func (c* User_detailsController) GetUserDetailsById(){
     sql := `
         SELECT users.id, users.name AS name, users.age, users.email, 
 		user_details.designation, user_details.phone, user_details.address,
-		cities.name AS city_name,
+		cities.name AS city_name, cities.id AS city_id,
 		states.name AS state_name,
 		countries.name AS country_name
 		
